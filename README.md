@@ -4,3 +4,4 @@ Manage data collected by the La Kretz Center (LKC). Currently includes the follo
 
 - Live Fuel Moisture (abbrev. "LFM")
 - Thermocouple Loggers
+- Soil Heat
