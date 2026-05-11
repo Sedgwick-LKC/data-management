@@ -15,7 +15,7 @@
 librarian::shelf(tidyverse, googledrive)
 
 # Get set up
-source("00_setup.r")
+source("-setup.r")
 
 # Clear environment
 rm(list = ls()); gc()
@@ -33,7 +33,7 @@ lfm_drive <- googledrive::drive_ls(path = googledrive::as_id("https://drive.goog
 lfm_drive
 
 # Identify the file path we want locally
-lfm_path <- file.path("data", "raw", lfm_drive$name)
+lfm_path <- file.path("data", "raw-fire", lfm_drive$name)
 
 # Download this file
 googledrive::drive_download(file = lfm_drive$id, overwrite = T, path = lfm_path)
