@@ -9,7 +9,7 @@
 librarian::shelf(tidyverse, supportR, tidyxl)
 
 # Get set up
-source("00_setup.r")
+source("-setup.r")
 
 # Clear environment
 rm(list = ls()); gc()
@@ -23,11 +23,11 @@ purrr::walk(.x = dir(path = file.path("tools"), pattern = "fxn_"),
 ## ----------------------------- ##
 
 # Identify all of the logger data
-(local_therm <- dir(path = file.path("data", "raw"), pattern = "VMP25_logger"))
+(local_therm <- dir(path = file.path("data", "raw-fire"), pattern = "VMP25_logger"))
 
 # Read each of these files in (as a list)
 therm_v01 <- purrr::map(.x = local_therm, 
-    .f = ~ read_logger(hobo_path = file.path("data", "raw", .x))) %>% 
+    .f = ~ read_logger(hobo_path = file.path("data", "raw-fire", .x))) %>% 
   # Unlist to a single, big dataframe
   purrr::list_rbind(x = .) %>% 
   # Identify numeric logger names
@@ -101,11 +101,11 @@ dplyr::glimpse(therm_v03)
 ## ----------------------------- ##
 
 # Identify all of the wildnote metadata for those loggers
-(local_wn.meta <- dir(path = file.path("data", "raw"), pattern = "VMP25_TREX"))
+(local_wn.meta <- dir(path = file.path("data", "raw-fire"), pattern = "VMP25_TREX"))
 
 # Read each of these files in (as a list)
 meta_v01 <- purrr::map(.x = local_wn.meta, 
-    .f = ~ read_wildnote(wn_path = file.path("data", "raw", .x))[["Activity"]]) %>% 
+    .f = ~ read_wildnote(wn_path = file.path("data", "raw-fire", .x))[["Activity"]]) %>% 
   # Unlist to a single, big dataframe
   purrr::list_rbind(x = .)
 
@@ -177,6 +177,6 @@ dplyr::glimpse(therm_v99)
 
 # Export this locally
 write.csv(x = therm_v99, na = '', row.names = F,
-          file = file.path("data", "tidy", "vmp-25_thermocouple-logger-data.csv"))
+          file = file.path("data", "tidy", "thermocouple-loggers_vmp-25.csv"))
 
 # End ----
