@@ -6,3 +6,6 @@ Manage data collected by the La Kretz Center (LKC). Currently includes the follo
 - Precipitation (downloaded from the [Synoptic Data](https://synopticdata.com/) portal)
 - Thermocouple Loggers
 - Soil Heat
+- Pre-burn vegetation surveys
+- Post-burn vegetation surveys
+- SHIFT-adjacent vegetation data
