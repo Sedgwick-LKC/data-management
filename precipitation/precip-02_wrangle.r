@@ -36,9 +36,9 @@ prec_v01 <- parse_synoptic(csv = raw_prec)
 dplyr::glimpse(prec_v01)
 
 # Let's go ahead and rename these slightly
-prec_v02 <- prec_v01 |> 
+prec_v02 <- prec_v01 %>% 
   # Make them lowercase
-  dplyr::rename_with(.fn = tolower) |> 
+  dplyr::rename_with(.fn = tolower) %>% 
   # Simplify precip column name
   dplyr::rename(precip.accum_mm = precip_accum_set_1_millimeters)
 
@@ -50,13 +50,13 @@ dplyr::glimpse(prec_v02)
 ## --------------------------------- ##
 
 # Need to get date/time into a use-able format
-prec_v03 <- prec_v02 |> 
+prec_v03 <- prec_v02 %>% 
   # Strip out date 
   dplyr::mutate(date = as.Date(stringr::str_sub(string = date_time,
                                                 start = 1, end = 10)),
-                .before = date_time) |> 
+                .before = date_time) %>% 
   # Remove time column
-  dplyr::select(-date_time) |> 
+  dplyr::select(-date_time) %>% 
   # And keep only unique rows
   dplyr::distinct()
   
@@ -74,18 +74,18 @@ ggplot2::ggplot(prec_v03, ggplot2::aes(x = date, y = as.numeric(precip.accum_mm)
   ggplot2::geom_path()
 
 # Do needed calculation
-prec_v04 <- prec_v03 |> 
+prec_v04 <- prec_v03 %>% 
   # Make precip a real number
-  dplyr::mutate(precip.accum_mm = as.numeric(precip.accum_mm)) |> 
+  dplyr::mutate(precip.accum_mm = as.numeric(precip.accum_mm)) %>% 
   # Remove any missing precip
-  dplyr::filter(!is.na(precip.accum_mm)) |> 
+  dplyr::filter(!is.na(precip.accum_mm)) %>% 
   # We want just one value per date (the maximum)
-  dplyr::group_by(dplyr::across(.cols = dplyr::all_of(setdiff(x = names(prec_v03), y = "precip.accum_mm")))) |> 
+  dplyr::group_by(dplyr::across(.cols = dplyr::all_of(setdiff(x = names(prec_v03), y = "precip.accum_mm")))) %>% 
   dplyr::summarize(precip.max = max(precip.accum_mm, na.rm = T),
-                   .groups = "keep") |> 
-  dplyr::ungroup() |> 
+                   .groups = "keep") %>% 
+  dplyr::ungroup() %>% 
   # Start calculating daily precip
-  dplyr::mutate(precip.diff = precip.max - dplyr::lag(precip.max)) |> 
+  dplyr::mutate(precip.diff = precip.max - dplyr::lag(precip.max)) %>% 
   # Fill in the edge cases that doesn't handle well
   dplyr::mutate(precip_mm = dplyr::case_when(
     ## If the difference is missing, there is no prior value so we'll just use the accumulated
@@ -93,7 +93,7 @@ prec_v04 <- prec_v03 |>
     ## If the difference is negative, it's the start of a new catchment cycle
     precip.diff < 0 ~ precip.max,
     ## Otherwise, use the difference
-    T ~ precip.diff)) |> 
+    T ~ precip.diff)) %>% 
   # Ditch leftover columns
   dplyr::select(-precip.max, -precip.diff)
 
