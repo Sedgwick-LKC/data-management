@@ -9,7 +9,7 @@
 librarian::shelf(tidyverse, supportR)
 
 # Get set up
-source("00_setup.r")
+source("-setup.r")
 
 # Clear environment
 rm(list = ls()); gc()
@@ -22,7 +22,7 @@ rm(list = ls()); gc()
 lfm_name <- "Live_fuel_moisture_data_sheet_103023.xlsx"
 
 # Identify the file path we want locally
-lfm_path <- file.path("data", "raw", lfm_name)
+lfm_path <- file.path("data", "raw-fire", lfm_name)
 
 # What sheets are in the data?
 (lfm_tabs <- readxl::excel_sheets(path = lfm_path))

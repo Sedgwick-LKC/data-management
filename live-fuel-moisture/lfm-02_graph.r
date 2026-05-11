@@ -9,7 +9,7 @@
 librarian::shelf(tidyverse, lubridate)
 
 # Get set up
-source("00_setup.r")
+source("-setup.r")
 
 # Clear environment
 rm(list = ls()); gc()
