@@ -15,7 +15,6 @@ rm(list = ls()); gc()
 dir.create(path = file.path("data", "raw-fire"), showWarnings = FALSE, recursive = TRUE)
 dir.create(path = file.path("data", "raw-climate"), showWarnings = FALSE)
 dir.create(path = file.path("data", "raw-veg"), showWarnings = FALSE)
-dir.create(path = file.path("data", "raw-precip"), showWarnings = FALSE)
 dir.create(path = file.path("data", "tidy"), showWarnings = FALSE)
 dir.create(path = file.path("graphs"), showWarnings = FALSE)
 
