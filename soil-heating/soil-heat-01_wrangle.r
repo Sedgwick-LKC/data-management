@@ -114,7 +114,51 @@ dplyr::glimpse(head_v99)
 
 # Export locally
 write.csv(x = head_v99, na = '', row.names = FALSE,
-          file = file.path("data", "tidy", "soil-heat_headers.csv"))
+  file = file.path("data", "tidy", "soil-heat_headers.csv"))
+
+## ----------------------------- ##
+# Parse Data ----
+## ----------------------------- ##
+
+# Separate data into actual columns and remove unwanted values
+soil_v02 <- soil_v01 %>% 
+  dplyr::filter(stringr::str_count(string = x, pattern = ",") == 2) %>% 
+  tidyr::separate_wider_delim(data = ., cols = x, delim = ",",
+    names = c("date.time", "unit", "temperature_c"), cols_remove = TRUE) %>% 
+  dplyr::filter(unit != "Unit") %>% 
+  dplyr::select(-unit)
+
+# Check structure
+dplyr::glimpse(soil_v02)
+
+# Fix column class issues
+soil_v03 <- soil_v02 %>% 
+  dplyr::mutate(date.time = as.POSIXct(date.time, format = "%m/%d/%y %I:%M:%S %p"),
+    temperature_c = as.numeric(temperature_c))
+
+# Check structure
+dplyr::glimpse(soil_v03)
+
+# Do necessary wrangling for shefire analysis
+soil_v04 <- soil_v03
+  # NL note: need to confirm process with FD
+
+# Check structure
+dplyr::glimpse(soil_v04)
+  
+## ----------------------------- ##
+# Export Data ----
+## ----------------------------- ##
+
+# Make a final version
+soil_v99 <- soil_v04
+
+# Check structure
+dplyr::glimpse(soil_v99)
+
+# Export locally
+write.csv(x = soil_v99, na = '', row.names = FALSE,
+  file = file.path("data", "tidy", "soil-heat_temperatures.csv"))
 
 # BASEMENT ----
 
